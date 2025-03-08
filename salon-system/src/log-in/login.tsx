@@ -20,26 +20,26 @@ const Login: React.FC = () => {
     setError(""); // Clear previous errors
   
     try {
-      const response = await axios.post(
+      const response = await axios.post<LoginResponse>(
         "http://localhost:8000/api/login",
         { username, password },
-        { withCredentials: true }  // ✅ Send credentials for session cookies
+        { withCredentials: true }  // ✅ Ensure credentials are sent
       );
   
       console.log("Login Successful:", response.data);
       alert(`Welcome, ${response.data.username}!`);
   
-    } catch (err: any) {
-      console.error("Login Error:", err);
-  
-      if (!err.response) {
-        setError("Failed to connect to the server. Check if FastAPI is running.");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        console.error("Axios Error:", err.response?.data);
+    
+        setError(err.response?.data?.detail || "Login failed");
       } else {
-        setError(err.response.data?.detail || "Login failed");
+        console.error("Unexpected Error:", err);
+        setError("An unexpected error occurred");
       }
     }
-  };
-  
+  }  
 
   return (
     <div className="login-container">
