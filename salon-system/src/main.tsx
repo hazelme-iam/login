@@ -1,0 +1,14 @@
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+
+
+import './assets/css/style.css'
+import Login from './log-in/login'
+
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <Login />
+  </StrictMode>,
+)
